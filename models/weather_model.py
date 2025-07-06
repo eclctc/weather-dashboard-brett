@@ -1,0 +1,88 @@
+import os
+import requests
+from typing import Dict, Optional, Tuple
+from dotenv import load_dotenv
+from datetime import datetime, timedelta #To handle timestamps.
+import time # For delays, rate limiting, and timestamps.
+import json # For handling JSON responses (used implicitly).
+import logging # For tracking activity, errors, and debugging info.
+from typing import Dict, List, Optional # Provides type hints like Dict, List, and Optional.
+
+# Load environment variables from .env file
+load_dotenv()
+
+class WeatherModel:
+    """Model class responsible for weather data operations and API interactions."""
+    
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_base_url = "http://api.openweathermap.org/data/2.5/weather"
+        self.api_key = api_key or os.getenv('OPENWEATHER_API_KEY')
+
+        if not self.api_key:
+            raise ValueError("API key not found. Please set OPENWEATHER_API_KEY in .env file or pass api_key parameter.")
+    
+    def fetch_weather_data(self, city_name: str) -> Tuple[Optional[Dict], str]:
+        """
+        Fetches weather data for a given city from the OpenWeatherMap API.
+        
+        Args:
+            city_name: Name of the city to get weather for
+            
+        Returns:
+            Tuple of (weather_data_dict, source_info_string)
+            weather_data_dict is None if fetch failed
+        """
+        weather_data = None
+        source_info = "Open Weather API Data"
+        
+        try:
+            # Build the URL for the API request
+            city_name = city_name.lower().strip() # Make sure that we're passing lower case and stripping the whitespace into the API
+            full_api_url = f"{self.api_base_url}?q={city_name}&appid={self.api_key}&units=imperial"
+            
+            # Send the request and get the response
+            response = requests.get(full_api_url)
+            response.raise_for_status()
+            
+            # Convert the response into a dictionary
+            json_data = response.json()
+            
+            # Check if the API returned an error (e.g., city not found)
+            if json_data.get("cod") == "404":
+                raise ValueError("City not found by API.")
+            
+            # Extract the weather details we need from the dictionary
+            
+            # Convert datetime from UNIX timestamp for CSV file
+            timestamp = json_data["dt"] 
+            timestamp = datetime.utcfromtimestamp(timestamp).date()
+            
+            weather_data = {
+                "date": timestamp,
+                "temp": json_data['main']['temp'],
+                "description": json_data['weather'][0]['description'],
+                "humidity": json_data['main']['humidity']
+            }
+            
+        except requests.exceptions.RequestException as e:
+            source_info = f"API Failed (Network): {e}"
+        except ValueError as e:
+            source_info = f"API Failed (Data): {e}"
+        except KeyError as e:
+            source_info = f"API Failed (Parse): Missing key {e}"
+        except Exception as e:
+            source_info = f"API Failed (Unknown): {e}"
+        
+        return weather_data, source_info
+    
+    def validate_city_name(self, city_name: str) -> bool:
+        """
+        Validates if the city name is valid (not empty after stripping whitespace).
+        
+        Args:
+            city_name: City name to validate
+            
+        Returns:
+            True if valid, False otherwise
+        """
+        return bool(city_name.strip())

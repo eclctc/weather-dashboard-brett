@@ -5,7 +5,7 @@ from datetime import datetime, timedelta #To handle timestamps.
 import time # For delays, rate limiting, and timestamps.
 import json # For handling JSON responses (used implicitly).
 import logging # For tracking activity, errors, and debugging info.
-from typing import Dict, List, Optional, Tuple # Provides type hints like Dict, List, Tuple and Optional.
+from typing import Dict, List, Optional, Tuple # Provides type hints like Tupel. Dict, List and Optional.
 
 # Load environment variables from .env file
 load_dotenv()

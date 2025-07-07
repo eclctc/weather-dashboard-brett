@@ -1,12 +1,11 @@
 import os
 import requests
-from typing import Dict, Optional, Tuple
 from dotenv import load_dotenv
 from datetime import datetime, timedelta #To handle timestamps.
 import time # For delays, rate limiting, and timestamps.
 import json # For handling JSON responses (used implicitly).
 import logging # For tracking activity, errors, and debugging info.
-from typing import Dict, List, Optional # Provides type hints like Dict, List, and Optional.
+from typing import Dict, List, Optional, Tuple # Provides type hints like Dict, List, Tuple and Optional.
 
 # Load environment variables from .env file
 load_dotenv()
@@ -103,7 +102,7 @@ class WeatherModel:
             if attempt < max_retries - 1:
                 time.sleep(retry_delays[attempt])
                 source_info = f"Failed to fetch data after {max_retries} attempts"
-                # If all attempts fail, it logs a critical error and returns None.
+                # If all attempts fail, update the UI with the critical error and return None.
                 return None
 
         return weather_data, source_info

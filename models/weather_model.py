@@ -83,6 +83,8 @@ class WeatherModel:
                     "description": json_data['weather'][0]['description'],
                     "humidity": json_data['main']['humidity']
                 }
+
+                return weather_data, source_info
                 
             except requests.exceptions.RequestException as e:
                 source_info = f"API Failed (Network): {e}"
@@ -101,11 +103,9 @@ class WeatherModel:
             
             if attempt < max_retries - 1:
                 time.sleep(retry_delays[attempt])
-                source_info = f"Failed to fetch data after {max_retries} attempts"
                 # If all attempts fail, update the UI with the critical error and return None.
+                source_info = f"Failed to fetch data after {max_retries} attempts"
                 return None
-
-        return weather_data, source_info
     
     def validate_city_name(self, city_name: str) -> bool:
         """

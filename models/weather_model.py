@@ -1,7 +1,7 @@
 import os
 import requests
 from dotenv import load_dotenv
-from datetime import datetime, timedelta #To handle timestamps.
+from datetime import datetime, timedelta, timezone # To handle timestamps.
 import time # For delays, rate limiting, and timestamps.
 import json # For handling JSON responses (used implicitly).
 from typing import Dict, List, Optional, Tuple # Provides type hints like Tupel. Dict, List and Optional.
@@ -53,6 +53,7 @@ class WeatherModel:
         # Attempts up to 3 retries if errors occur.
         max_retries = 3
         retry_delays = [1, 2, 4]  # Exponential backoff        
+        
         for attempt in range(max_retries):
             try:
                 # Build the URL for the API request
@@ -61,20 +62,15 @@ class WeatherModel:
 
                 # Send the request and get the response
                 response = requests.get(full_api_url, timeout=10)
-                response.raise_for_status()
+                response.raise_for_status() # Check if an HTTP request was successful
                 
                 # Convert the response into a dictionary
                 json_data = response.json()
                 
-                # Check if the API returned an error (e.g., city not found)
-                if json_data.get("cod") == "404":
-                    raise ValueError("City not found by API.")
-                
-                # Extract the weather details we need from the dictionary
-                
+                # Extract the weather details we need from the dictionary    
                 # Convert datetime from UNIX timestamp for CSV file
-                timestamp = json_data["dt"] 
-                timestamp = datetime.utcfromtimestamp(timestamp).date()
+                timestamp = json_data["dt"]
+                timestamp = datetime.fromtimestamp(timestamp, tz=timezone.utc).date()
                 
                 weather_data = {
                     "date": timestamp,
@@ -85,26 +81,38 @@ class WeatherModel:
 
                 return weather_data, source_info
                 
-            except requests.exceptions.RequestException as e:
-                source_info = f"API Failed (Network): {e}"
-            except ValueError as e:
-                if "429" in str(e):
-                    source_info = "API Failed (Rate Limited): Waiting 60 seconds..."
+            except requests.exceptions.Timeout:
+                source_info = f"API request timed out (attempt {attempt + 1}/{max_retries})"
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delays[attempt])
+                    continue
+                    
+            except requests.exceptions.HTTPError as e:
+                if e.response.status_code == 429:  # Rate limited
+                    source_info = f"API rate limited (attempt {attempt + 1}/{max_retries}): Waiting 60 seconds..."
                     time.sleep(60)  # Wait 1 minute
-                    continue  # Retry the loop
+                    continue
                 else:
-                    source_info = f"API Failed (Data): {e}"
-            except KeyError as e:
-                source_info = f"API Failed (Parse): Missing key {e}"
+                    source_info = f"{e.response.status_code}"
+                    if attempt < max_retries - 1:
+                        time.sleep(retry_delays[attempt])
+                        continue
+                        
+            except requests.exceptions.RequestException as e:
+                source_info = f"API network error (attempt {attempt + 1}/{max_retries}): {e}"
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delays[attempt])
+                    continue
+                    
             except Exception as e:
-                source_info = f"API Failed (Unknown): {e}"
-                        # Wait before retry (except on last attempt)
-            
-            if attempt < max_retries - 1:
-                time.sleep(retry_delays[attempt])
-                # If all attempts fail, update the UI with the critical error and return None.
-                source_info = f"Failed to fetch data after {max_retries} attempts"
-                return None
+                source_info = f"Unexpected error (attempt {attempt + 1}/{max_retries}): {e}"
+                if attempt < max_retries - 1:
+                    time.sleep(retry_delays[attempt])
+                    continue
+        
+        # If all attempts fail, return final error message
+        source_info = f"Failed to fetch weather data after {max_retries} attempts. Last error: {source_info}"
+        return None, source_info
     
     def validate_city_name(self, city_name: str) -> bool:
         """

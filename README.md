@@ -1,5 +1,5 @@
 ## 🌤️ Overview
-This is a simple web application that serves as a weather dashboard, providing real-time weather information and forecasts for cities around the world. Users can search for a city to view current weather conditions and a multi-day forecast.
+This is a simple Tkinter application that serves as a weather dashboard, providing real-time weather information and forecasts for cities around the world. Users can search for a city to view current weather conditions and a multi-day forecast.
 
 ## ✨ Features
 - City Search: Users can search for weather information by entering a city name.

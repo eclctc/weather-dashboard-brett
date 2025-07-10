@@ -45,7 +45,7 @@ class WeatherModel:
             Tuple of (weather_data_dict, source_info_string)
             weather_data_dict is None if fetch failed
         """
-        self._respect_rate_limit()
+        self._respect_rate_limit() # Ensure rate limits are not exceeded
 
         weather_data = None
         source_info = "Open Weather API Data"
@@ -68,8 +68,9 @@ class WeatherModel:
                 json_data = response.json()
                 
                 # Extract the weather details we need from the dictionary    
-                # Convert datetime from UNIX timestamp for CSV file
                 timestamp = json_data["dt"]
+
+                # Convert datetime from UNIX timestamp for CSV file
                 timestamp = datetime.fromtimestamp(timestamp, tz=timezone.utc).date()
                 
                 weather_data = {

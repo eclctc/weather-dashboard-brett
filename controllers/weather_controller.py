@@ -7,7 +7,7 @@ from features.weather_logger import WeatherLogger
 from views.weather_view import WeatherView
 
 class WeatherController:
-    """Controller class that coordinates between the model and view."""
+    """Controller class that coordinates between the model (data layer) and view (Tkinter GUI)."""
     
     def __init__(self):
         # Initialize model and logger
@@ -38,12 +38,8 @@ class WeatherController:
         
         # Handle API errors
         if weather_data is None:
-            if "Network" in source_info:
+            if "404" in source_info:
                 self.weather_view.show_error("Network Error", f"Could not connect to weather service. {source_info}")
-            elif "Data" in source_info:
-                self.weather_view.show_error("Data Error", f"Problem getting weather data: {source_info}")
-            elif "Parse" in source_info:
-                self.weather_view.show_error("Data Parse Error", f"Unexpected weather data format from API. {source_info}")
             else:
                 self.weather_view.show_error("Unknown Error", f"An unexpected error occurred: {source_info}")
         

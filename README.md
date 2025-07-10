@@ -42,8 +42,3 @@ This project was developed as a capstone project for JTC Tech Pathways Summer '2
 - Weather API Provider: For reliable weather data services
 - Open Source Community: For tools and libraries that made this project possible
 - Instructors and Mentors: For guidance and support throughout the development process
-
-
-
-## Credits
-- Weather data provided by OpenWeatherMap API 

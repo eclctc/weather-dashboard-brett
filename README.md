@@ -6,8 +6,8 @@ This is a simple Tkinter application that serves as a weather dashboard, providi
 - Toggle between Dark and Light Mode.
 - Current Weather Display: Shows current temperature, humidity, and general weather conditions.
 
-```
 ## 🏢 Structure
+```
 ├── README.md
 ├── config.py
 ├── controllers

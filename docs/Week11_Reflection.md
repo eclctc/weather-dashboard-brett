@@ -13,7 +13,7 @@ Team Interest:	Impartial. I'll be on one, but I really want to focus on the ML a
 ## Section 2: Feature Selection Rationale
     - Feature 1: Basic prediction logic *** : I'm learning a lot about linear regression right now and I think I have the basic concepts down. So now it's time to implement. I just need to find the right data set to try.
 
-    - Feature 2: Theme Switcher ** : I'm choosig this feature because it's a relatively easy implementation (already finished it locally, just need to break it out as a feature) and I want to have my bases covered to get the MVP ready to go.
+    - Feature 2: Save daily weather to CSV * : I'm choosig this feature because it's a relatively easy implementation (already finished it locally, just need to break it out as a feature) and I want to have my bases covered to get the MVP ready to go.
 
     - Feature 3: Matplotlib embedded in Tkinter ** : I'm choosing this piece because it will go hand in hand with my machine learning implementation. My idea behind it is - show the data points, show the line, explain the correlation between the line and the points. I'll probably throw some more graphs in there too. But again, this piggy backs off of my ML implementation.
 

@@ -4,7 +4,7 @@ import logging
 class WeatherLogger:
     """Handles logging of weather data to files."""
     
-    def __init__(self, log_file: str = "weather_log.csv"):
+    def __init__(self, log_file: str = "data/weather_log.csv"):
         self.log_file = log_file
     
     def log_weather_data(self, city_name: str, weather_data: Optional[Dict], source_info: str) -> Optional[str]:

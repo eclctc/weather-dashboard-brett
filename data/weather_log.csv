@@ -1,0 +1,48 @@
+date, city, temperature, description, humidity, data_source
+2025-06-28, Atlanta, 86.81, scattered clouds, 56, Open Weather API Data
+2025-06-30, Atlanta, 87.8, scattered clouds, 57, Open Weather API Data
+2025-06-30, Atlanta, 83.86, overcast clouds, 62, Open Weather API Data
+2025-07-02, Atlanta, 74.68, moderate rain, 83, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, Atlanta, 82.44, clear sky, 53, Open Weather API Data
+2025-07-03, New York, 77.65, clear sky, 80, Open Weather API Data
+2025-07-03, New York, 77.65, clear sky, 80, Open Weather API Data
+2025-07-07, new york, 79.92, clear sky, 83, Open Weather API Data
+2025-07-08, Atlanta, 90.55, broken clouds, 51, Open Weather API Data
+2025-07-09, Atlanta, 86.88, clear sky, 58, Open Weather API Data
+2025-07-09, New York, 76.01, mist, 85, Open Weather API Data
+2025-07-09, Atlanta, 89.58, few clouds, 52, Open Weather API Data
+2025-07-09, London, 79.27, broken clouds, 48, Open Weather API Data
+2025-07-09, Melbourne, 87.93, clear sky, 69, Open Weather API Data
+2025-07-09, Atlanta, 92.14, scattered clouds, 51, Open Weather API Data
+2025-07-10, Chicago, 77.11, broken clouds, 64, Open Weather API Data
+2025-07-13, Atlanta, 89.83, few clouds, 57, Open Weather API Data
+2025-07-15, Atlanta, 88.84, clear sky, 54, Open Weather API Data
+2025-07-15, Atlanta, 87.49, clear sky, 59, Open Weather API Data
+2025-07-19, Atlanta, 89.22, few clouds, 61, Open Weather API Data
+2025-07-19, Atlanta, 89.94, scattered clouds, 56, Open Weather API Data
+2025-07-19, Atlanta, 89.94, scattered clouds, 56, Open Weather API Data
+2025-07-19, Atlanta, 89.94, scattered clouds, 56, Open Weather API Data
+2025-07-19, Atlanta, 89.94, scattered clouds, 56, Open Weather API Data
+2025-07-19, Atlanta, 90.09, scattered clouds, 55, Open Weather API Data
+2025-07-19, Atlanta, 89.08, scattered clouds, 55, Open Weather API Data
+2025-07-19, Atlanta, 87.91, few clouds, 57, Open Weather API Data
+2025-07-19, Atlanta, 87.76, few clouds, 58, Open Weather API Data
+2025-07-19, Atlanta, 87.67, scattered clouds, 59, Open Weather API Data
+2025-07-19, Atlanta, 87.67, scattered clouds, 59, Open Weather API Data
+2025-07-19, Atlanta, 86.95, scattered clouds, 61, Open Weather API Data
+2025-07-19, Atlanta, 86.95, scattered clouds, 61, Open Weather API Data
+2025-07-19, Atlanta, 86.95, scattered clouds, 61, Open Weather API Data
+2025-07-19, Atlanta, 86.95, scattered clouds, 61, Open Weather API Data
+2025-07-20, Atlanta, 86.18, clear sky, 63, Open Weather API Data
+2025-07-20, Atlanta, 84.92, clear sky, 67, Open Weather API Data
+2025-07-20, Atlanta, 84.92, clear sky, 67, Open Weather API Data
+2025-07-20, Atlanta, 84.92, clear sky, 67, Open Weather API Data
+2025-07-20, Atlanta, 84.65, clear sky, 67, Open Weather API Data

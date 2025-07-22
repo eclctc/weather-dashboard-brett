@@ -3,7 +3,14 @@ from ttkbootstrap.constants import *
 from tkinter import messagebox
 from typing import Callable, Dict, Optional
 from models.pollen_model import PollenModel
+import pandas as pd
+from datetime import datetime, timedelta
 
+# Matplotlib imports for tkinter integration
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+import matplotlib.dates as mdates
 
 class WeatherView:
     """View class responsible for the user interface."""
@@ -12,12 +19,14 @@ class WeatherView:
         self.on_refresh_callback = on_refresh_callback
         self.current_theme = "flatly"
         self.available_themes = ["flatly", "darkly"]
+        self.pollen_data_df = None  # Store the pollen dataset
         self.setup_main_window()
         self.setup_gui()
+        self.load_pollen_dataset()
 
     def setup_main_window(self):
         self.main_window = ttk.Window(themename=self.current_theme)
-        self.main_window.geometry("1200x500")
+        self.main_window.geometry("1200x800")
         self.main_window.title("Atlanta Weather & Pollen Tracker")
         self.main_window.resizable(False, False)
 
@@ -151,6 +160,25 @@ class WeatherView:
         self.health_text.pack(side=LEFT, fill=BOTH, expand=True)
         scrollbar.pack(side=RIGHT, fill=Y)
 
+        # --- Chart Section ---
+        chart_frame = ttk.LabelFrame(self.main_window, text="📊 Pollen Trends (Last Year - Same Week)", padding=10)
+        chart_frame.pack(fill=BOTH, expand=False, padx=10, pady=(0, 10))
+
+        # Create matplotlib figure and canvas
+        self.fig = Figure(figsize=(12, 4), dpi=100)
+        self.ax = self.fig.add_subplot(111)
+        
+        # Initialize with empty plot
+        self.ax.set_title("Pollen Levels - Same Week Last Year")
+        self.ax.set_xlabel("Date")
+        self.ax.set_ylabel("Pollen Count")
+        self.ax.grid(True, alpha=0.3)
+        
+        # Create canvas and add to tkinter
+        self.canvas = FigureCanvasTkAgg(self.fig, master=chart_frame)
+        self.canvas.draw()
+        self.canvas.get_tk_widget().pack(fill=BOTH, expand=True)
+
         # --- Status Bar ---
         status_frame = ttk.Frame(self.main_window, padding=5)
         status_frame.pack(fill=X, side=BOTTOM)
@@ -163,9 +191,125 @@ class WeatherView:
                                              font=("Arial", 8, "italic"))
         self.pollen_source_label.pack(side=RIGHT)
 
+    def load_pollen_dataset(self):
+        """Load the pollen dataset from CSV file"""
+        try:
+            self.pollen_data_df = pd.read_csv('data/pollen_atlanta_23_24.csv')
+            # Ensure date column is datetime
+            self.pollen_data_df['date'] = pd.to_datetime(self.pollen_data_df['date'])
+            self.update_historical_chart()
+        except FileNotFoundError:
+            print("Warning: Pollen dataset not found at data/pollen_atlanta_23_24.csv")
+        except Exception as e:
+            print(f"Error loading pollen dataset: {e}")
+
+    def set_pollen_dataset(self, df: pd.DataFrame):
+        """Set the pollen dataset for historical chart display"""
+        self.pollen_data_df = df.copy()
+        # Ensure date column is datetime
+        self.pollen_data_df['date'] = pd.to_datetime(self.pollen_data_df['date'])
+        self.update_historical_chart()
+
+    def update_historical_chart(self):
+        """Update the chart with historical pollen data from the same week last year"""
+        if self.pollen_data_df is None or self.pollen_data_df.empty:
+            return
+
+        # Clear the current plot
+        self.ax.clear()
+
+        # Get current date and calculate last year's date range
+        current_date = datetime.now().date()
+        last_year_end_date = current_date.replace(year=current_date.year - 1)
+        last_year_start_date = last_year_end_date - timedelta(days=6)  # 7 days total
+
+        # Filter data for the 7-day period from last year
+        filtered_data = self.pollen_data_df[
+            (self.pollen_data_df['date'].dt.date >= last_year_start_date) &
+            (self.pollen_data_df['date'].dt.date <= last_year_end_date)
+        ].copy()
+
+        if filtered_data.empty:
+            self.ax.text(0.5, 0.5, 'No historical data available for this week last year', 
+                        horizontalalignment='center', verticalalignment='center', 
+                        transform=self.ax.transAxes, fontsize=12)
+            self.ax.set_title(f"Pollen Levels - {last_year_start_date.strftime('%b %d')} to {last_year_end_date.strftime('%b %d, %Y')}")
+        else:
+            # Sort by date
+            filtered_data = filtered_data.sort_values('date')
+            
+            # Plot the three pollen types
+            self.ax.plot(filtered_data['date'], filtered_data['Count.tree_pollen'], 
+                        marker='o', linewidth=2, label='Tree Pollen', color='#2E8B57')
+            self.ax.plot(filtered_data['date'], filtered_data['Count.grass_pollen'], 
+                        marker='s', linewidth=2, label='Grass Pollen', color='#32CD32')
+            self.ax.plot(filtered_data['date'], filtered_data['Count.weed_pollen'], 
+                        marker='^', linewidth=2, label='Weed Pollen', color='#DAA520')
+
+            # Format x-axis dates
+            self.ax.xaxis.set_major_formatter(mdates.DateFormatter('%m/%d'))
+            self.ax.xaxis.set_major_locator(mdates.DayLocator(interval=1))
+            
+            # Rotate x-axis labels for better readability
+            plt.setp(self.ax.xaxis.get_majorticklabels(), rotation=45)
+            
+            # Set title with date range
+            self.ax.set_title(f"Pollen Levels - {last_year_start_date.strftime('%b %d')} to {last_year_end_date.strftime('%b %d, %Y')}")
+            
+            # Add legend
+            self.ax.legend(loc='upper right')
+
+        # Set labels and grid
+        self.ax.set_xlabel("Date")
+        self.ax.set_ylabel("Pollen Count")
+        self.ax.grid(True, alpha=0.3)
+        
+        # Apply current theme to chart
+        self.update_chart_theme()
+        
+        # Adjust layout and refresh canvas
+        self.fig.tight_layout()
+        self.canvas.draw()
+
+    def update_chart_theme(self):
+        """Update chart colors based on current theme"""
+        if self.current_theme == "darkly":
+            # Dark theme colors
+            self.fig.patch.set_facecolor('#2b2b2b')
+            self.ax.set_facecolor('#2b2b2b')
+            self.ax.tick_params(colors='white')
+            self.ax.xaxis.label.set_color('white')
+            self.ax.yaxis.label.set_color('white')
+            self.ax.title.set_color('white')
+            self.ax.grid(True, alpha=0.3, color='white')
+            # Update legend text color if legend exists
+            legend = self.ax.get_legend()
+            if legend:
+                for text in legend.get_texts():
+                    text.set_color('white')
+            # Update background color and edge color
+            legend.get_frame().set_facecolor('black') 
+        else:
+            # Light theme colors
+            self.fig.patch.set_facecolor('white')
+            self.ax.set_facecolor('white')
+            self.ax.tick_params(colors='black')
+            self.ax.xaxis.label.set_color('black')
+            self.ax.yaxis.label.set_color('black')
+            self.ax.title.set_color('black')
+            self.ax.grid(True, alpha=0.3, color='black')
+            # Update legend text color if legend exists
+            legend = self.ax.get_legend()
+            if legend:
+                for text in legend.get_texts():
+                    text.set_color('black')
+            legend.get_frame().set_facecolor('white')
+        self.canvas.draw()
+
     def change_theme(self, new_theme):
         self.main_window.style.theme_use(new_theme)
         self.current_theme = new_theme
+        self.update_chart_theme()
 
     def toggle_theme(self):
         new_theme = "darkly" if self.dark_mode_var.get() else "flatly"

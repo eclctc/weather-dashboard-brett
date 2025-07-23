@@ -33,7 +33,7 @@ class WeatherView:
     def setup_gui(self):
         # --- Header ---
         header_frame = ttk.Frame(self.main_window, padding=10)
-        header_frame.pack(fill=X)
+        header_frame.pack(fill=X)        
 
         # Title + Date stacked vertically
         title_date_frame = ttk.Frame(header_frame)
@@ -48,6 +48,29 @@ class WeatherView:
                                     text="Date: --",
                                     font=("Arial", 12, "italic", "bold"))
         self.date_label.pack(anchor="w", pady=(3, 0))
+        # --- Tabs ---
+        notebook = ttk.Notebook(self.main_window, bootstyle="primary")
+        notebook.pack(fill=BOTH, expand=True)
+
+        # Dashboard tab
+        self.main_tab = ttk.Frame(notebook)
+        notebook.add(self.main_tab, text="Dashboard")
+
+        # Search tab
+        self.charts_tab = ttk.Frame(notebook)
+        notebook.add(self.charts_tab, text="Search")
+
+        # Charts tab
+        self.charts_tab = ttk.Frame(notebook)
+        notebook.add(self.charts_tab, text="Historical Charts")
+
+        # Prediction tab
+        self.prediction_tab = ttk.Frame(notebook)
+        notebook.add(self.prediction_tab, text="Prediction")
+
+        # Teams tab
+        self.prediction_tab = ttk.Frame(notebook)
+        notebook.add(self.prediction_tab, text="Breakout Room 7")        
 
         # Theme toggle + refresh on the right
         theme_frame = ttk.Frame(header_frame)

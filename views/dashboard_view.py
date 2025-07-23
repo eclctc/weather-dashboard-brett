@@ -12,6 +12,13 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import matplotlib.dates as mdates
 
+## Import views for tabs
+from views import charts_view
+from views import prediction_view
+from views import search_view
+from views import team_view
+
+
 class WeatherView:
     """View class responsible for the user interface."""
 
@@ -48,30 +55,7 @@ class WeatherView:
                                     text="Date: --",
                                     font=("Arial", 12, "italic", "bold"))
         self.date_label.pack(anchor="w", pady=(3, 0))
-        # --- Tabs ---
-        notebook = ttk.Notebook(self.main_window, bootstyle="primary")
-        notebook.pack(fill=BOTH, expand=True)
-
-        # Dashboard tab
-        self.main_tab = ttk.Frame(notebook)
-        notebook.add(self.main_tab, text="Dashboard")
-
-        # Search tab
-        self.charts_tab = ttk.Frame(notebook)
-        notebook.add(self.charts_tab, text="Search")
-
-        # Charts tab
-        self.charts_tab = ttk.Frame(notebook)
-        notebook.add(self.charts_tab, text="Historical Charts")
-
-        # Prediction tab
-        self.prediction_tab = ttk.Frame(notebook)
-        notebook.add(self.prediction_tab, text="Prediction")
-
-        # Teams tab
-        self.prediction_tab = ttk.Frame(notebook)
-        notebook.add(self.prediction_tab, text="Breakout Room 7")        
-
+        
         # Theme toggle + refresh on the right
         theme_frame = ttk.Frame(header_frame)
         theme_frame.pack(side=RIGHT)
@@ -94,9 +78,42 @@ class WeatherView:
             bootstyle="primary"
         )
         self.refresh_button.pack(side=RIGHT, padx=(0, 20))
+        
+        # --- Tabs ---
+        notebook = ttk.Notebook(self.main_window, bootstyle="primary")
+        notebook.pack(fill=BOTH, expand=True)
 
-        # --- Main Content ---
-        main_frame = ttk.Frame(self.main_window, padding=10)
+        # Dashboard tab
+        self.main_tab = ttk.Frame(notebook)
+        notebook.add(self.main_tab, text="Dashboard")
+        # ADD DASHBOARD CONTENT
+        self.setup_dashboard_content()
+
+        # Search tab - using imported search_view
+        self.search_tab = ttk.Frame(notebook)
+        notebook.add(self.search_tab, text="Search")
+        search_view.create_search_view(self.search_tab, self)
+
+        # Charts tab - using imported charts_view
+        self.charts_tab = ttk.Frame(notebook)
+        notebook.add(self.charts_tab, text="Historical Charts")
+        charts_view.create_charts_view(self.charts_tab, self)
+
+        # Prediction tab - using imported prediction_view
+        self.prediction_tab = ttk.Frame(notebook)
+        notebook.add(self.prediction_tab, text="Prediction")
+        prediction_view.create_prediction_view(self.prediction_tab, self)
+
+        # Team tab - using imported team_view
+        self.team_tab = ttk.Frame(notebook)
+        notebook.add(self.team_tab, text="Breakout Room 7")
+        team_view.create_team_view(self.team_tab, self)
+
+    def setup_dashboard_content(self):
+        """Setup the main dashboard content inside the Dashboard tab"""
+        
+        # --- Main Content --- (Parent is now self.main_tab)
+        main_frame = ttk.Frame(self.main_tab, padding=10)
         main_frame.pack(fill=BOTH, expand=True)
 
         # --- Weather Column ---
@@ -183,8 +200,8 @@ class WeatherView:
         self.health_text.pack(side=LEFT, fill=BOTH, expand=True)
         scrollbar.pack(side=RIGHT, fill=Y)
 
-        # --- Chart Section ---
-        chart_frame = ttk.LabelFrame(self.main_window, text="📊 Pollen Trends (Last Year - Same Week)", padding=10)
+        # --- Chart Section --- (Parent is now self.main_tab)
+        chart_frame = ttk.LabelFrame(self.main_tab, text="📊 Pollen Trends (Last Year - Same Week)", padding=10)
         chart_frame.pack(fill=BOTH, expand=False, padx=10, pady=(0, 10))
 
         # Create matplotlib figure and canvas
@@ -202,8 +219,8 @@ class WeatherView:
         self.canvas.draw()
         self.canvas.get_tk_widget().pack(fill=BOTH, expand=True)
 
-        # --- Status Bar ---
-        status_frame = ttk.Frame(self.main_window, padding=5)
+        # --- Status Bar --- (Parent is now self.main_tab)
+        status_frame = ttk.Frame(self.main_tab, padding=5)
         status_frame.pack(fill=X, side=BOTTOM)
 
         self.weather_source_label = ttk.Label(status_frame, text="Weather: Not loaded",
@@ -310,8 +327,8 @@ class WeatherView:
             if legend:
                 for text in legend.get_texts():
                     text.set_color('white')
-            # Update background color and edge color
-            legend.get_frame().set_facecolor('black') 
+                # Update background color and edge color
+                legend.get_frame().set_facecolor('black') 
         else:
             # Light theme colors
             self.fig.patch.set_facecolor('white')
@@ -326,7 +343,7 @@ class WeatherView:
             if legend:
                 for text in legend.get_texts():
                     text.set_color('black')
-            legend.get_frame().set_facecolor('white')
+                legend.get_frame().set_facecolor('white')
         self.canvas.draw()
 
     def change_theme(self, new_theme):

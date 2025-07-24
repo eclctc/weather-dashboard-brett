@@ -2,7 +2,7 @@ import unittest
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-from views.weather_view import WeatherView  # adjust import as needed
+from views.dashboard_view import WeatherView
 
 
 class TestWeatherViewChart(unittest.TestCase):

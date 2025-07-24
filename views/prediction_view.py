@@ -1,5 +1,6 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+from features import prediction_logic
 
 def create_prediction_view(parent_frame, parent_view):
     """Create the prediction view content"""

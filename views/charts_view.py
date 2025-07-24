@@ -1,5 +1,6 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+from features import graph_logic
 
 def create_charts_view(parent_frame, parent_view):
     """Create the charts view content"""

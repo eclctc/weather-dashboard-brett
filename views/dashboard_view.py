@@ -24,7 +24,7 @@ class WeatherView:
 
     def __init__(self, on_refresh_callback: Callable[[], None]):
         self.on_refresh_callback = on_refresh_callback
-        self.current_theme = "flatly"
+        self.current_theme = "darkly"
         self.available_themes = ["flatly", "darkly"]
         self.pollen_data_df = None  # Store the pollen dataset
         self.setup_main_window()
@@ -60,7 +60,7 @@ class WeatherView:
         theme_frame = ttk.Frame(header_frame)
         theme_frame.pack(side=RIGHT)
 
-        ttk.Label(theme_frame, text="Dark Mode:").pack(side=LEFT, padx=5)
+        ttk.Label(theme_frame, text="Light Mode:").pack(side=LEFT, padx=5)
         self.dark_mode_var = ttk.BooleanVar(value=False)
 
         self.theme_switch = ttk.Checkbutton(
@@ -352,7 +352,7 @@ class WeatherView:
         self.update_chart_theme()
 
     def toggle_theme(self):
-        new_theme = "darkly" if self.dark_mode_var.get() else "flatly"
+        new_theme = "flatly" if self.dark_mode_var.get() else "darkly"
         self.change_theme(new_theme)
 
     def _on_refresh_clicked(self):

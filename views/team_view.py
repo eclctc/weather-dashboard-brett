@@ -1,6 +1,7 @@
 # team_view.py
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
+from features import team_feature
 
 def create_team_view(parent_frame, parent_view):
     """Create the team view content"""

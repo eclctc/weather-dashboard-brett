@@ -94,12 +94,12 @@ class WeatherView:
         notebook.add(self.search_tab, text="Search")
         search_view.create_search_view(self.search_tab, self)
 
-        # Charts tab - using imported charts_view
+        # # Charts tab - using imported charts_view
         self.charts_tab = ttk.Frame(notebook)
         notebook.add(self.charts_tab, text="Historical Charts")
         charts_view.create_charts_view(self.charts_tab, self)
 
-        # Prediction tab - using imported prediction_view
+        # # Prediction tab - using imported prediction_view
         self.prediction_tab = ttk.Frame(notebook)
         notebook.add(self.prediction_tab, text="Prediction")
         prediction_view.create_prediction_view(self.prediction_tab, self)
@@ -359,7 +359,10 @@ class WeatherView:
         self.on_refresh_callback()
 
     def update_display(self, weather_data: Optional[Dict], weather_source: str,
-                       pollen_data: Optional[Dict], pollen_source: str):
+                    pollen_data: Optional[Dict], pollen_source: str):
+        """Update Dashboard tab displays with weather data"""
+        
+        # Update Dashboard tab only
         if weather_data:
             self.temperature_label.config(text=f"Temperature: {weather_data['temp']}°F")
             self.humidity_label.config(text=f"Humidity: {weather_data['humidity']}%")
@@ -368,13 +371,32 @@ class WeatherView:
         else:
             self.clear_weather_labels()
 
+        # Update pollen data
         if pollen_data:
             self.update_pollen_display(pollen_data)
         else:
             self.clear_pollen_labels()
 
+        # Update source labels
         self.weather_source_label.config(text=f"Weather: {weather_source}")
         self.pollen_source_label.config(text=f"Pollen: {pollen_source}")
+
+    def update_search_display(self, weather_data: Optional[Dict], weather_source: str):
+        """Update Search tab displays with weather data"""
+        if hasattr(self, 'search_temperature_label'):
+            if weather_data:
+                self.search_temperature_label.config(text=f"Temperature: {weather_data['temp']}°F")
+                self.search_description_label.config(text=f"Conditions: {weather_data['description'].title()}")
+                self.search_humidity_label.config(text=f"Humidity: {weather_data['humidity']}%")
+                self.search_data_source_label.config(text=f"Data Source: {weather_source}")
+            else:
+                self.search_temperature_label.config(text="Temperature: Unable to load")
+                self.search_description_label.config(text="Conditions: Unable to load")
+                self.search_humidity_label.config(text="Humidity: Unable to load")
+                self.search_data_source_label.config(text=f"Data Source: {weather_source}")
+        
+        # Force GUI update
+        self.main_window.update_idletasks()
 
     def update_pollen_display(self, pollen_data: Dict):
         self.grass_label.config(text=f"Grass: {PollenModel.get_pollen_level_text(pollen_data['grass'])}")
@@ -415,6 +437,10 @@ class WeatherView:
         self.health_text.delete(1.0, "end")
         self.health_text.insert("end", "No health recommendations loaded.")
         self.health_text.config(state="disabled")
+    
+    def set_controller(self, controller):
+        """Set reference to the controller for search functionality"""
+        self.controller = controller    
 
     def show_error(self, title: str, message: str):
         messagebox.showerror(title, message)

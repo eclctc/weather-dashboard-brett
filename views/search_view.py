@@ -81,4 +81,4 @@ def create_search_view(parent_frame, parent_view):
     parent_view.search_temperature_label = temperature_label
     parent_view.search_description_label = description_label
     parent_view.search_humidity_label = humidity_label
-    parent_view.search_data_source_label = data_source_label
+    parent_view.search_data_source_label = data_source_label 

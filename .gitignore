@@ -14,21 +14,8 @@ venv/
 __pycache__/
 *.pyc
 
-# SQLite/Database files
-*.db
-*.sqlite
-*.sqlite3
 
-# Data exports
-*.csv
-*.xls
-*.xlsx
-features/animated_radar_map.html
-
-# Log files
-*.log
-
-# IDE/editor files (optional, but good practice)
+# IDE/editor files
 *.vscode/
 *.idea/
 

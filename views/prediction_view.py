@@ -1,7 +1,7 @@
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 from features.prediction_logic import PollenPredictor
-from datetime import datetime
+from datetime import datetime, timedelta
 import threading
 
 def create_prediction_view(parent_frame, parent_view):
@@ -175,6 +175,7 @@ def create_prediction_view(parent_frame, parent_view):
             today_forecast = predictor.get_daily_forecast(today)
             
             # Get 3-day forecast
+            today = today + timedelta(days=1)
             three_day_forecast = predictor.get_three_day_forecast(today)
             
             # Update GUI in main thread

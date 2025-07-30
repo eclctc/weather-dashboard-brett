@@ -5,6 +5,7 @@ cycler==0.12.1
 dotenv==0.9.9
 fonttools==4.59.0
 idna==3.10
+joblib==1.5.1
 kiwisolver==1.4.8
 matplotlib==3.10.3
 numpy==2.3.2
@@ -16,7 +17,10 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 pytz==2025.2
 requests==2.32.4
+scikit-learn==1.7.1
+scipy==1.16.1
 six==1.17.0
+threadpoolctl==3.6.0
 ttkbootstrap==1.14.1
 tzdata==2025.2
 urllib3==2.5.0

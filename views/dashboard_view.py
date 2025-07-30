@@ -94,10 +94,6 @@ class WeatherView:
         notebook.add(self.search_tab, text="Search")
         search_view.create_search_view(self.search_tab, self)
 
-        # # Charts tab - using imported charts_view
-        self.charts_tab = ttk.Frame(notebook)
-        notebook.add(self.charts_tab, text="Historical Charts")
-        charts_view.create_charts_view(self.charts_tab, self)
 
         # # Prediction tab - using imported prediction_view
         self.prediction_tab = ttk.Frame(notebook)
@@ -106,7 +102,7 @@ class WeatherView:
 
         # Team tab - using imported team_view
         self.team_tab = ttk.Frame(notebook)
-        notebook.add(self.team_tab, text="Breakout Room 7")
+        notebook.add(self.team_tab, text="weatherYouLikeItOrNot")
         team_view.create_team_view(self.team_tab, self)
 
     def setup_dashboard_content(self):

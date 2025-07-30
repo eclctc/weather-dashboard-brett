@@ -185,9 +185,12 @@ class PollenPredictor:
         """Get 3-day pollen forecast"""
         if start_date is None:
             start_date = datetime.now().date()
+            start_date = start_date + timedelta(days=1)
+
         elif isinstance(start_date, str):
+            start_date = start_date + timedelta(days=1)
             start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-        
+            
         forecasts = []
         
         for i in range(3):

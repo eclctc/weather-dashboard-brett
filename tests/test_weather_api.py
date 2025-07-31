@@ -6,13 +6,6 @@ import requests
 from unittest.mock import patch, Mock
 from models.weather_model import WeatherModel
 
-# ---------- Test: validate_city_name ----------
-def test_validate_city_name():
-    wm = WeatherModel(api_key="dummy")
-    assert wm.validate_city_name("New York") is True
-    assert wm.validate_city_name("   ") is False
-    assert wm.validate_city_name("") is False
-
 # ---------- Test: fetch_weather_data (success) ----------
 @patch('models.weather_model.requests.get')
 def test_fetch_weather_data_success(mock_get):

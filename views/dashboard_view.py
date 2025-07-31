@@ -351,6 +351,7 @@ class WeatherView:
 
     def _on_refresh_clicked(self):
         self.on_refresh_callback()
+        self.show_refresh()
 
     def update_display(self, weather_data: Optional[Dict], weather_source: str,
                     pollen_data: Optional[Dict], pollen_source: str):
@@ -441,6 +442,9 @@ class WeatherView:
 
     def show_warning(self, title: str, message: str):
         messagebox.showwarning(title, message)
+    
+    def show_refresh(self):
+        messagebox.showinfo(title="API Call Successful", message="Data has been refreshed")        
 
     def run(self):
         self.main_window.mainloop()

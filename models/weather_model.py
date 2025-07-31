@@ -114,15 +114,3 @@ class WeatherModel:
         # If all attempts fail, return final error message
         source_info = f"Failed to fetch weather data after {max_retries} attempts. Last error: {source_info}"
         return None, source_info
-    
-    def validate_city_name(self, city_name: str) -> bool:
-        """
-        Validates if the city name is valid (not empty after stripping whitespace).
-        
-        Args:
-            city_name: City name to validate
-            
-        Returns:
-            True if valid, False otherwise
-        """
-        return bool(city_name.strip())

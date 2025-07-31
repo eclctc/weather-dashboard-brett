@@ -13,7 +13,6 @@ from matplotlib.figure import Figure
 import matplotlib.dates as mdates
 
 ## Import views for tabs
-from views import charts_view
 from views import prediction_view
 from views import search_view
 from views import team_view
@@ -93,7 +92,6 @@ class WeatherView:
         self.search_tab = ttk.Frame(notebook)
         notebook.add(self.search_tab, text="Search")
         search_view.create_search_view(self.search_tab, self)
-
 
         # # Prediction tab - using imported prediction_view
         self.prediction_tab = ttk.Frame(notebook)

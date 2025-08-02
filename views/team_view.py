@@ -20,7 +20,7 @@ def create_team_view(parent_frame, parent_view=None):
     control_frame = ttk.Frame(main_frame)
     control_frame.pack(pady=10)
 
-    ttk.Label(control_frame, text="Select Fiscal Month:").pack(side=tk.LEFT, padx=(0, 10))
+    ttk.Label(control_frame, text="Select Month:").pack(side=tk.LEFT, padx=(0, 10))
 
     month_var = tk.StringVar()
     month_dropdown = ttk.Combobox(control_frame,

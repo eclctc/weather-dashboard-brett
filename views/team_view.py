@@ -1,82 +1,68 @@
-# team_view.py
-import ttkbootstrap as ttk
-from ttkbootstrap.constants import *
+# views/team_view.py
+
+import tkinter as tk
+from tkinter import ttk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
 from features import team_feature
 
-def create_team_view(parent_frame, parent_view):
-    """Create the team view content"""
-    # Main container
+# Set matplotlib to use non-interactive backend to prevent popups
+plt.ioff()
+
+def create_team_view(parent_frame, parent_view=None):
+    """Embed Team Precipitation View into the provided notebook frame."""
+
+    # Main container inside notebook tab
     main_frame = ttk.Frame(parent_frame)
-    main_frame.pack(fill=BOTH, expand=True, padx=20, pady=20)
-    
-    # Title
-    title_label = ttk.Label(main_frame, 
-                           text="Breakout Room 7 - Team Information", 
-                           font=("Arial", 14, "bold"))
-    title_label.pack(pady=(0, 20))
-    
-    # Project info
-    project_frame = ttk.LabelFrame(main_frame, text="Project Overview", padding=15)
-    project_frame.pack(fill=X, pady=(0, 20))
-    
-    project_text = """
-    Project: Atlanta Weather & Pollen Prediction System
-    
-    Objective: Develop a multi-output regression model to predict both temperature 
-    and pollen count using comprehensive weather data.
-    
-    Data Sources:
-    • Weather data with 35+ meteorological parameters
-    • Pollen count data with species-specific breakdowns
-    • Time period: 2023-2024 for robust training
-    """
-    
-    project_label = ttk.Label(project_frame, text=project_text, justify=LEFT)
-    project_label.pack(anchor=W)
-    
-    # Team members (placeholder)
-    team_frame = ttk.LabelFrame(main_frame, text="Team Members", padding=15)
-    team_frame.pack(fill=X, pady=(0, 20))
-    
-    # Create a simple team member display
-    members_frame = ttk.Frame(team_frame)
-    members_frame.pack(fill=X)
-    
-    member_label = ttk.Label(members_frame, 
-                            text="Team members and roles will be displayed here", 
-                            font=("Arial", 10, "italic"))
-    member_label.pack()
-    
-    # Progress section
-    progress_frame = ttk.LabelFrame(main_frame, text="Project Progress", padding=15)
-    progress_frame.pack(fill=BOTH, expand=True)
-    
-    # Progress items
-    progress_items = [
-        ("Data Collection", "Complete", "success"),
-        ("Data Analysis", "In Progress", "warning"),
-        ("Model Development", "Planned", "secondary"),
-        ("UI Implementation", "In Progress", "info"),
-        ("Testing & Validation", "Planned", "secondary")
-    ]
-    
-    for i, (task, status, style) in enumerate(progress_items):
-        task_frame = ttk.Frame(progress_frame)
-        task_frame.pack(fill=X, pady=5)
+    main_frame.pack(fill=tk.BOTH, expand=True)
+
+    # Dropdown for fiscal months
+    control_frame = ttk.Frame(main_frame)
+    control_frame.pack(pady=10)
+
+    ttk.Label(control_frame, text="Select Fiscal Month:").pack(side=tk.LEFT, padx=(0, 10))
+
+    month_var = tk.StringVar()
+    month_dropdown = ttk.Combobox(control_frame,
+                                   textvariable=month_var,
+                                   values=team_feature.FISCAL_MONTHS,
+                                   state="readonly",
+                                   width=20)
+    month_dropdown.pack(side=tk.LEFT)
+
+    # Chart container
+    canvas_frame = ttk.Frame(main_frame)
+    canvas_frame.pack(fill=tk.BOTH, expand=True)
+
+    chart_canvas = None
+
+    def update_chart(event=None):
+        nonlocal chart_canvas
+        month = month_var.get()
+        if not month:
+            return
+
+        # Clear previous chart
+        for widget in canvas_frame.winfo_children():
+            widget.destroy()
+
+        # Generate and embed chart
+        data = team_feature.get_avg_precip_by_city(month)
         
-        task_label = ttk.Label(task_frame, text=f"{task}:", width=20, anchor=W)
-        task_label.pack(side=LEFT)
-        
-        status_label = ttk.Label(task_frame, text=status, bootstyle=style)
-        status_label.pack(side=LEFT, padx=10)
-        
-        # Add progress bar for visual appeal
-        if status == "Complete":
-            progress = 100
-        elif status == "In Progress":
-            progress = 60
-        else:
-            progress = 0
-            
-        progress_bar = ttk.Progressbar(task_frame, value=progress, length=200)
-        progress_bar.pack(side=RIGHT, padx=10)
+        # Create figure
+        fig, ax = plt.subplots(figsize=(7, 4))
+        ax.bar(data['city'], data['precip'], color='steelblue')
+        ax.set_title(f"Average Precipitation by City - {month}")
+        ax.set_ylabel("Precipitation (mm)")
+        ax.tick_params(axis='x', rotation=30)
+        plt.tight_layout()
+
+        # Embed in tkinter
+        chart_canvas = FigureCanvasTkAgg(fig, master=canvas_frame)
+        chart_canvas.draw()
+        chart_canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
+
+    # Hook up dropdown
+    month_dropdown.bind("<<ComboboxSelected>>", update_chart)
+
+    return main_frame  # if parent app needs to do anything with it

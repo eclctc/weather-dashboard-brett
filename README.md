@@ -74,7 +74,7 @@ To use the Weather Dashboard:
     git clone https://github.com/eclctc/weather-dashboard-brett.git
 2. Navigate to the project directory:
     cd weather-dashboard-brett
-3. Run pip install requirements.txt **Note:** if you're using a Mac, you may have issues with Tkinter. If you do run into issues, try downloading [Anaconda](https://www.anaconda.com/download), installing it globally and then selecting Conda as your python interpreter.
+3. Run pip install requirements.txt **Note:** if you're using a Mac and a virtual environment in VS Code, you may have issues with Tkinter. If you do run into issues, try downloading [Anaconda](https://www.anaconda.com/download), installing it globally and then selecting Conda as your python interpreter in VS Code.
 4. Enter your OpenWeatherMap API key into the .env file and save
 5. Enter your Google Pollen API key into the .env file and save
 6. Run the program:
@@ -92,6 +92,6 @@ This project was developed as a capstone project for JTC Tech Pathways Summer '2
 - [JTC Tech Pathways Summer '25:](https://centerforjustice.columbia.edu/justicethroughcode) For providing the learning opportunity and project framework
 - [Open Weather API Provider:](https://openweathermap.org/) For reliable weather data services
 - [Google Pollen API Provider:](https://developers.google.com/maps/documentation/pollen) For reliable pollen data services
-- [Ambee](https://www.getambee.com/) For providing historical pollen data for Atlanta, GA to handle machine learning predictions
+- [Ambee:](https://www.getambee.com/) For providing historical pollen data for Atlanta, GA to handle machine learning predictions
 - Open Source Community: For tools and libraries that made this project possible
 - Instructors and Mentors: For guidance and support throughout the development process

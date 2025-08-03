@@ -75,8 +75,8 @@ To use the Weather Dashboard:
 2. Navigate to the project directory:
     cd weather-dashboard-brett
 3. Run pip install requirements.txt **Note:** if you're using a Mac and a virtual environment in VS Code, you may have issues with Tkinter. If you do run into issues, try downloading [Anaconda](https://www.anaconda.com/download), installing it globally and then selecting Conda as your python interpreter in VS Code.
-4. Enter your OpenWeatherMap API key into the .env file and save
-5. Enter your Google Pollen API key into the .env file and save
+4. Enter your [OpenWeatherMap API](https://openweathermap.org/) key into the .env file and save
+5. Enter your [Google Pollen API](https://developers.google.com/maps/documentation/pollen/overview) key into the .env file and save
 6. Run the program:
     python app.py
 

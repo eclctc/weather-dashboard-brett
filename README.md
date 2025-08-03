@@ -92,6 +92,6 @@ This project was developed as a capstone project for JTC Tech Pathways Summer '2
 - [JTC Tech Pathways Summer '25:](https://centerforjustice.columbia.edu/justicethroughcode) For providing the learning opportunity and project framework
 - [Open Weather API Provider:](https://openweathermap.org/) For reliable weather data services
 - [Google Pollen API Provider:](https://developers.google.com/maps/documentation/pollen) For reliable pollen data services
-- [Ambee] (https://www.getambee.com/) For providing historical pollen data for Atlanta, GA to handle machine learning predictions
+- [Ambee](https://www.getambee.com/) For providing historical pollen data for Atlanta, GA to handle machine learning predictions
 - Open Source Community: For tools and libraries that made this project possible
 - Instructors and Mentors: For guidance and support throughout the development process

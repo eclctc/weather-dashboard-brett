@@ -50,7 +50,6 @@ The app combines real-time weather data with specialized pollen monitoring, allo
 │   └── search_view.py
 │   └── team_view.py
 ├── requirments.txt
-├── screenshots
 ├── app.py
 
 ```

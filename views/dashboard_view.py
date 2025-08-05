@@ -95,7 +95,7 @@ class WeatherView:
 
         # # Prediction tab - using imported prediction_view
         self.prediction_tab = ttk.Frame(notebook)
-        notebook.add(self.prediction_tab, text="Prediction")
+        notebook.add(self.prediction_tab, text="Pollen Forecast")
         prediction_view.create_prediction_view(self.prediction_tab, self)
 
         # Team tab - using imported team_view

@@ -20,7 +20,7 @@ def create_search_view(parent_frame, parent_view):
     content_wrapper.pack()
 
     # Input section
-    input_frame = ttk.LabelFrame(content_wrapper, text="Location Parameters", padding=15)
+    input_frame = ttk.LabelFrame(content_wrapper, text="Location", padding=15)
     input_frame.pack(pady=(0, 20), fill=X)
 
     input_frame.columnconfigure(0, weight=1)
@@ -29,7 +29,7 @@ def create_search_view(parent_frame, parent_view):
     input_frame.columnconfigure(3, weight=0)  
     input_frame.columnconfigure(4, weight=1)  
 
-    ttk.Label(input_frame, text="Enter Your City Name: ").grid(row=1, column=1, sticky=W, padx=(0, 10), pady=(10, 0))
+    ttk.Label(input_frame, text="Enter City Name: ").grid(row=1, column=1, sticky=W, padx=(0, 10), pady=(10, 0))
     city_entry = ttk.Entry(input_frame, width=15)
     city_entry.grid(row=1, column=2, pady=(10, 0))
 

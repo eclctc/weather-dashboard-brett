@@ -295,7 +295,7 @@ class WeatherView:
 
         # Set labels and grid
         self.ax.set_xlabel("Date")
-        self.ax.set_ylabel("Pollen Count")
+        self.ax.set_ylabel("Pollen Count (grains/m³)")
         self.ax.grid(True, alpha=0.3)
         
         # Apply current theme to chart
